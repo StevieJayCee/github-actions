@@ -1,0 +1,48 @@
+name: "Send Slack Message"
+description: "Post a Slack message to indicate the execution status of a workflow."
+inputs:
+  channel-id:
+    description: "Channel id to send message"
+    required: false
+    default: 'B066ZPFV2GG'
+  message:
+    description: "Message to display"
+    required: true
+  status-icon: 
+    description: Status icon to display
+    required: true
+    default: ':white_check_mark:'
+runs:
+  using: "composite"
+  steps:
+    - name: Post to Slack message on execution completed
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        channel-id: ${{ inputs.channel-id == null && 'B066ZPFV2GG' || inputs.channel-id }}
+        payload: |
+          {
+              "text": "${{ inputs.message }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ inputs.message }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Workflow: ${{ github.workflow }} ${{ inputs.status-icon }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  }
+                }
+              ]
+            }

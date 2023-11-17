@@ -5,6 +5,24 @@ on:
   schedule:
   - cron: '*/5 * * * *'
 
+  workflow_dispatch:
+    inputs:
+      base_branch: 
+        description: 'Base branch'
+        required: true
+        default: 'main'
+      branch_name: 
+        description: 'Current branch name'
+        required: true
+        default: 'steven_test_branch_name_default'
+      channel-id:
+        description: 'Slack channel-id to send message'
+        required: false
+        default: 'B066ZPFV2GG'
+
+        # env:
+        #   SLACK_CHANNEL: gh-actions-slack-integration-test
+        #   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
@@ -22,3 +40,13 @@ jobs:
           temporaryPublicStorage: true # upload lighthouse report to the temporary storage
         env:
           LHCI_GITHUB_APP_TOKEN: ${{secrets.LHCI_GITHUB_APP_TOKEN}}
+
+      - name: Send the message to Slack channel
+        id: slack
+        uses: ./.github/actions/send-slack-message
+        if: success() || failure()
+        with:
+          channel-id: ${{ inputs.channel-id }}
+          message: "Lighthouse first slack test is a ${{ job.status }}"
+          status-icon: ${{ job.status == 'success' && ':white_check_mark:' || ':alert:' }} 
+
