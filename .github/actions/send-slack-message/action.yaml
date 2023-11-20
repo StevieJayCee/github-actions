@@ -34,19 +34,12 @@ runs:
                     "text": "${{ inputs.message }}"
                   }
                 },
-                # {
-                #   "type": "section",
-                #   "text": {
-                #     "type": "mrkdwn",
-                #     "text": "Workflow: ${{ github.workflow }} ${{ inputs.status-icon }}"
-                #   }
-                # },
-                # {
-                #   "type": "section",
-                #   "text": {
-                #     "type": "mrkdwn",
-                #     "text": "URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                #   }
-                # }
+                {
+                "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ toJSON(inputs.data) }}"
+                  }
+                }
               ]
             }
