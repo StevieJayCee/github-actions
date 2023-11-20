@@ -42,6 +42,8 @@ jobs:
           LHCI_GITHUB_APP_TOKEN: ${{secrets.LHCI_GITHUB_APP_TOKEN}}
 
       - name: Send the message to Slack channel
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         id: slack
         uses: ./.github/actions/send-slack-message
         if: success() || failure()
