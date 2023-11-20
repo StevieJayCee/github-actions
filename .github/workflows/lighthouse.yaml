@@ -30,6 +30,7 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3
       - name: Audit URLs using Lighthouse
+        id: LHCIAction
         uses: treosh/lighthouse-ci-action@v10
         with:
           urls: |
@@ -48,6 +49,7 @@ jobs:
         uses: ./.github/actions/send-slack-message
         if: success() || failure()
         with:
+          data: '{ "links": ${{steps.LHCIAction.outputs.links}}, "resultsPath": ${{steps.LHCIAction.outputs.resultsPath}}, "assertionResults": ${{steps.LHCIAction.outputs.assertionResults}} }'
           channel-id: ${{ inputs.channel-id }}
           message: "Lighthouse first slack test is a ${{ job.status }}"
           status-icon: ${{ job.status == 'success' && ':white_check_mark:' || ':alert:' }} 

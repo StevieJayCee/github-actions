@@ -12,6 +12,10 @@ inputs:
     description: Status icon to display
     required: true
     default: ':white_check_mark:'
+  data:
+    description: LOL
+    required: false
+    default: "{}"
 runs:
   using: "composite"
   steps:
@@ -31,18 +35,25 @@ runs:
                   }
                 },
                 {
-                  "type": "section",
+                "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Workflow: ${{ github.workflow }} ${{ inputs.status-icon }}"
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    "text": "${{ inputs.data }}"
                   }
                 }
+                # {
+                #   "type": "section",
+                #   "text": {
+                #     "type": "mrkdwn",
+                #     "text": "Workflow: ${{ github.workflow }} ${{ inputs.status-icon }}"
+                #   }
+                # },
+                # {
+                #   "type": "section",
+                #   "text": {
+                #     "type": "mrkdwn",
+                #     "text": "URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                #   }
+                # }
               ]
             }
