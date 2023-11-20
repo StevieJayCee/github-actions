@@ -17,6 +17,8 @@ runs:
   steps:
     - name: Post to Slack message on execution completed
       uses: slackapi/slack-github-action@v1.24.0
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       with:
         channel-id: ${{ inputs.channel-id == null && 'B066ZPFV2GG' || inputs.channel-id }}
         payload: |
