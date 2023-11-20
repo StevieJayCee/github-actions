@@ -45,11 +45,13 @@ jobs:
       - name: Send the message to Slack channel
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         id: slack
         uses: ./.github/actions/send-slack-message
         if: success() || failure()
         with:
-          data: '{ "links": ${{steps.LHCIAction.outputs.links}}, "resultsPath": ${{steps.LHCIAction.outputs.resultsPath}}, "assertionResults": ${{steps.LHCIAction.outputs.assertionResults}} }'
+          link: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          results: "${{steps.LHCIAction.outputs.resultsPath}}"
           channel-id: ${{ inputs.channel-id }}
           message: "Lighthouse first slack test is a ${{ job.status }}"
           status-icon: ${{ job.status == 'success' && ':white_check_mark:' || ':alert:' }} 

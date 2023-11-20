@@ -12,10 +12,14 @@ inputs:
     description: Status icon to display
     required: true
     default: ':white_check_mark:'
-  data:
+  results:
     description: LOL
     required: false
-    default: "{}"
+    default: ""
+  link:
+    description: LOL
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -38,7 +42,21 @@ runs:
                 "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ toJSON(inputs.data) }}"
+                    "text": "The results: ${{ inputs.results }}"
+                  }
+                },
+                {
+                "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "The results link: ${{ inputs.link }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "END OF MESSAGES"
                   }
                 }
               ]
