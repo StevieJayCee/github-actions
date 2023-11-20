@@ -34,13 +34,6 @@ runs:
                     "text": "${{ inputs.message }}"
                   }
                 },
-                {
-                "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "${{ toJSON(inputs.data) }}"
-                  }
-                }
                 # {
                 #   "type": "section",
                 #   "text": {
