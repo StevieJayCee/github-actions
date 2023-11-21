@@ -5,7 +5,7 @@ on:
             - "completed"
         # specifically listen out for the other lighthouse CI task to complete
         workflows:
-            - 'Lighthouse CI'   
+            - 'Treosh Lighthouse Action'   
 jobs:
     send-artifact-url-to-slack:
         # only do it if the last job passed

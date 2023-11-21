@@ -1,6 +1,6 @@
 # MUST BE MERGED INTO BASE/DEFAULT BRANCH TO RUN
 
-name: Lighthouse CI
+name: Treosh Lighthouse Action
 on:
   schedule:
   # Runs at 8am daily
