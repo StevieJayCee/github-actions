@@ -7,6 +7,10 @@ inputs:
     description: "Channel id to send message"
     required: false
     default: 'wp-web-team'
+  message:
+    description: "Message to display"
+    required: true
+    default: "This action has not been configured correctly in the WP-WEB repository"
   results:
     description: "The output provided from Lighthouse CI"
     required: false
