@@ -1,23 +1,16 @@
 name: "Send Slack Message"
-description: "Post a Slack message to indicate the execution status of a workflow."
+description: "Send a Slack message to the target channel, with build results."
 inputs:
   channel-id:
     description: "Channel id to send message"
     required: false
-    default: 'B066ZPFV2GG'
-  message:
-    description: "Message to display"
-    required: true
-  status-icon: 
-    description: Status icon to display
-    required: true
-    default: ':white_check_mark:'
+    default: 'wp-web-team'
   results:
-    description: LOL
+    description: "The output provided from Lighthouse CI"
     required: false
     default: ""
   link:
-    description: LOL
+    description: "A link to the artifact/asset containing the Lighthouse CI report"
     required: false
     default: ""
 runs:
@@ -42,21 +35,14 @@ runs:
                 "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "The results: ${{ inputs.results }}"
+                    "text": "The results of this lighthouse run: ${{ inputs.results }}"
                   }
                 },
                 {
                 "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "The results link: ${{ inputs.link }}"
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "END OF MESSAGES"
+                    "text": "Results can be downloaded at: ${{ inputs.link }}"
                   }
                 }
               ]
