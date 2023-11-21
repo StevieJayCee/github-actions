@@ -1,0 +1,34 @@
+name: Foos Lighthouse
+on:  
+    workflow_dispatch:
+      inputs:
+        base_branch: 
+          description: 'Base branch'
+          required: true
+          default: 'main'
+        branch_name: 
+          description: 'Current branch name'
+          required: true
+          default: 'steven_test_branch_name_default'
+        channel-id:
+          description: 'Slack channel-id to send message'
+          required: false
+          default: 'B066ZPFV2GG'
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+    - name: Lighthouse
+      uses: foo-software/lighthouse-check-action@master
+      with:
+        slackWebhookUrl: ${{ secrets.SLACK_WEBHOOK_URL }}
+        outputDirectory: ${{ github.workspace }}/tmp/artifacts
+        urls: 'https://www.foo.software,https://www.google.com'
+    - name: Upload artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: Lighthouse reports
+        path: ${{ github.workspace }}/tmp/artifacts
+    
