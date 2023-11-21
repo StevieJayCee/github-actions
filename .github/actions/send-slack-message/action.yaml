@@ -19,6 +19,8 @@ runs:
     - name: Post to Slack message on execution completed
       uses: slackapi/slack-github-action@v1.24.0
       with:
+        # Change default to target channel. This is meant to be a channel ID, but channel name works
+        # for me
         channel-id: ${{ inputs.channel-id == null && '#github-actions' || inputs.channel-id }}
         payload: |
           {

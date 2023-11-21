@@ -17,6 +17,8 @@ on:
         description: 'Current branch name'
         required: true
         default: 'steven_test_branch_name_default'
+        # Change default to target channel. This is meant to be a channel ID, but channel name works
+        # for me
       channel-id:
         description: 'Slack channel-id to send message'
         required: false
@@ -31,21 +33,22 @@ jobs:
         id: LHCIAction
         uses: treosh/lighthouse-ci-action@v10
         with:
-          # TODO: check if these can come from config.
+          # TODO: check if urls can come from config.
           urls: |
             https://wattpad.com/
             https://www.wattpad.com/story/6828459-warbreaker
         #   budgetPath: ./budget.json # test performance budgets
-          uploadArtifacts: true # save results as an action artifacts
-          temporaryPublicStorage: true # upload lighthouse report to the temporary storage
+          uploadArtifacts: true # save results as an action artifact
+          temporaryPublicStorage: true # upload lighthouse report to the temporary storage too
         env:
           LHCI_GITHUB_APP_TOKEN: ${{secrets.LHCI_GITHUB_APP_TOKEN}}
 
       - name: Send the message to Slack channel
         env:
+          # Will need sec/admin to set this up on slack.
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        id: slack
+        id: slack-message
         uses: ./.github/actions/send-slack-message
         if: success() || failure()
         with:
