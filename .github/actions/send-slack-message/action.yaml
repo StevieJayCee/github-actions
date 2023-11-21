@@ -19,7 +19,7 @@ runs:
     - name: Post to Slack message on execution completed
       uses: slackapi/slack-github-action@v1.24.0
       with:
-        channel-id: ${{ inputs.channel-id == null && 'B066ZPFV2GG' || inputs.channel-id }}
+        channel-id: ${{ inputs.channel-id == null && '#github-actions' || inputs.channel-id }}
         payload: |
           {
               "text": "${{ inputs.message }}",

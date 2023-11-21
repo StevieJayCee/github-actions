@@ -3,8 +3,10 @@
 name: Lighthouse CI
 on:
   schedule:
-  - cron: '*/5 * * * *'
+  # Runs at 8am daily
+  - cron: '0 8 * * *'
 
+  # Inputs allows manual trigger
   workflow_dispatch:
     inputs:
       base_branch: 
@@ -18,21 +20,18 @@ on:
       channel-id:
         description: 'Slack channel-id to send message'
         required: false
-        default: 'B066ZPFV2GG'
-
-        # env:
-        #   SLACK_CHANNEL: gh-actions-slack-integration-test
-        #   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        default: '#github-actions' #change to target channel
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
-      - name: Audit URLs using Lighthouse
+      - name: Audit URLs using Lighthouse and upload Artifact to Github
         id: LHCIAction
         uses: treosh/lighthouse-ci-action@v10
         with:
+          # TODO: check if these can come from config.
           urls: |
             https://wattpad.com/
             https://www.wattpad.com/story/6828459-warbreaker
@@ -52,7 +51,5 @@ jobs:
         with:
           link: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           results: "${{steps.LHCIAction.outputs.resultsPath}}"
-          channel-id: ${{ inputs.channel-id }}
-          message: "Lighthouse first slack test is a ${{ job.status }}"
-          status-icon: ${{ job.status == 'success' && ':white_check_mark:' || ':alert:' }} 
+          message: "Running LHCI and uploading Artifact: ${{ job.status }}"
 
