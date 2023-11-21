@@ -3,10 +3,12 @@ on:
     workflow_run:
         types:
             - "completed"
+        # specifically listen out for the other lighthouse CI task to complete
         workflows:
             - 'Lighthouse CI'   
 jobs:
-    comment-on-pr:
+    send-artifact-url-to-slack:
+        # only do it if the last job passed
         if: github.event.workflow_run.conclusion == 'success'
         runs-on: ubuntu-latest
         steps:
@@ -18,6 +20,12 @@ jobs:
                 OWNER: ${{ github.repository_owner }}
                 REPO: ${{ github.event.repository.name }}
                 WORKFLOW_RUN_EVENT_OBJ: ${{ toJSON(github.event.workflow_run) }}
+
+                # Uses the env and jq to hit the github API to
+                # get the last generated artifact relevant to this action.
+                # it also stores some pull request stuff not used.
+                # but left it in in case we can find use.
+                # src: https://github.com/orgs/community/discussions/51403
               run: |
                 PREVIOUS_JOB_ID=$(jq -r '.id' <<< "$WORKFLOW_RUN_EVENT_OBJ")
                 echo "Previous Job ID: $PREVIOUS_JOB_ID"
@@ -60,35 +68,3 @@ jobs:
               with:
                 message: "Lighthouse artifact now available"
                 link: "${{env.ARTIFACT_URL }}"
-                # results: "${{steps.LHCIAction.outputs.resultsPath}}"
-                # channel-id: ${{ inputs.channel-id }}
-                # status-icon: ${{ job.status == 'success' && ':white_check_mark:' || ':alert:' }} 
-
-
-
-            # - name: Update Comment
-            #   env:
-            #     JOB_PATH: "${{ github.server_url }}/${{ github.repository }}/actions/\
-            #         runs/${{ env.PREVIOUS_JOB_ID }}"
-            #     HEAD_SHA: ${{ env.HEAD_SHA }}
-            #   uses: peter-evans/create-or-update-comment@v2
-            #   with:
-            #     issue-number: ${{ env.PR_NUMBER }}
-            #     body: |-
-            #         ## Build Preview
-
-            #         [![badge]]($JOB_PATH)
-
-            #         You can find files attached to the below linked Workflow Run URL (Logs).
-
-            #         Please note that files only stay for around 90 days!
-
-            #         | Name      | Link
-            #         --------------------------------------------------------------------
-            #         | Commit    | ${{ env.HEAD_SHA }}
-
-            #         | Logs      | ${{ env.JOB_PATH }}
-
-            #         | Jar Files | ${{ env. ARTIFACT_URL }}
-
-            #         [badge]: https://img.shields.io/badge/Build-Success!-3fb950?logo=github&style=for-the-badge

@@ -1,3 +1,5 @@
+# I've overloaded this for two messages; probably best to have a different action for each message format.
+# unless we can somehow conditionally build the payload to send to slack.
 name: "Send Slack Message"
 description: "Send a Slack message to the target channel, with build results."
 inputs:
