@@ -36,13 +36,10 @@ jobs:
         id: LHCIAction
         uses: treosh/lighthouse-ci-action@v10
         with:
-          # TODO: check if urls can come from config.
-          urls: |
-            https://wattpad.com/
-            https://www.wattpad.com/story/6828459-warbreaker
+          configPath: ./lighthouse-productionrc.json
         #   budgetPath: ./budget.json # test performance budgets
           uploadArtifacts: true # save results as an action artifact
-          temporaryPublicStorage: true # upload lighthouse report to the temporary storage too
+          temporaryPublicStorage: false
         env:
           LHCI_GITHUB_APP_TOKEN: ${{secrets.LHCI_GITHUB_APP_TOKEN}}
 
