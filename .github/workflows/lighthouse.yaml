@@ -2,6 +2,9 @@
 
 name: Treosh Lighthouse Action
 on:
+  push:
+    branches:
+      - 'main'
   schedule:
   # Runs at 8am daily
   - cron: '0 8 * * *'
